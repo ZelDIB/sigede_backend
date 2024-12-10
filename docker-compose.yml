@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+    db:
+        image: mysql:8.0
+        volumes:
+            - ./mysql-data:/var/lib/mysql
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: sigede_db
+            MYSQL_USER: sigede
+            MYSQL_PASSWORD: sigede2024
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "8081:8080"
+        environment:
+            SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/sigede_db
+            SPRING_DATASOURCE_USERNAME: sigede
+            SPRING_DATASOURCE_PASSWORD: sigede2024
+            SPRING_JPA_HIBERNATE_DDL_AUTO: create
+            SPRING_MAIL_HOST: smtp.gmail.com
+            SPRING_MAIL_PORT: 587
+            SPRING_MAIL_USERNAME: sigedecontacto@gmail.com
+            SPRING_MAIL_PASSWORD: kalo bobb ufld rdaz
+            JWT_SECRET: sigede_tarea_integradora_decimo_b
+            JWT_EXPIRATION: 3600000
+            API_BASE_URL: http://98.83.97.145:3000/public/screens/vista_QR
+        depends_on:
+            - db

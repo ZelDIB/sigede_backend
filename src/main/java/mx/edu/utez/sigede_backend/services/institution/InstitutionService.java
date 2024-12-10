@@ -137,19 +137,23 @@ public class InstitutionService {
         }
 
         Institution institution = institutionOptional.get();
-        if (institution.getDocs() == null) {
-            throw new CustomException("institution.docs.notfound");
-        }
 
         try {
-            Blob documentBlob = institution.getDocs();
-            byte[] documentBytes = documentBlob.getBytes(1, (int) documentBlob.length());
 
+            Blob documentBlob = institution.getDocs();
             InstitutionDocDTO institutionDocsDTO = new InstitutionDocDTO();
-            institutionDocsDTO.setInstitutionId(institution.getInstitutionId());
-            institutionDocsDTO.setSuccess(true);
-            institutionDocsDTO.setMessage("Documento encontrado.");
-            institutionDocsDTO.setDocument(documentBytes);
+            if (documentBlob != null) {
+                byte[] documentBytes = documentBlob.getBytes(1, (int) documentBlob.length());
+                institutionDocsDTO.setInstitutionId(institution.getInstitutionId());
+                institutionDocsDTO.setSuccess(true);
+                institutionDocsDTO.setMessage("Documento encontrado.");
+                institutionDocsDTO.setDocument(documentBytes);
+            } else {
+                institutionDocsDTO.setInstitutionId(institution.getInstitutionId());
+                institutionDocsDTO.setSuccess(false);
+                institutionDocsDTO.setMessage("Documento nulo.");
+                institutionDocsDTO.setDocument(null);
+            }
 
             return institutionDocsDTO;
 

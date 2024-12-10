@@ -49,11 +49,13 @@ public class SpringSecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(
                 auth -> auth
-                        .requestMatchers(HttpMethod.GET,"/api/**").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/**").permitAll()
-                        //.requestMatchers(HttpMethod.POST,"/api/*").hasAnyRole("SUPERADMIN","ADMIN","CAPTURIST")
-                        .requestMatchers(HttpMethod.PUT,"/api/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT,"/api/*").hasAnyRole("SUPERADMIN","ADMIN","CAPTURIST")
+                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/credentials/get-qr-data/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/recovery-password/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/recovery-password/**").permitAll()
+                        .requestMatchers("/api/admin/**", "/api/capturists/**", "/api/credentials/**",
+                                "/api/institutions/**", "/api/users/**", "/api/user-info/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/download-credential/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), tokenJwtConfig))
                 .addFilter(new JwtValidationFilter(authenticationManager(), tokenJwtConfig))

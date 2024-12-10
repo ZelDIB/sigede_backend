@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -96,7 +95,6 @@ public class DocCredentialService {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
             wordMLPackage.save(outputStream);
-            wordMLPackage.save(new File("output.docx"));
 
             ResponseDocCredentialDTO dto = new ResponseDocCredentialDTO();
             dto.setOutputPath(outputPath);
