@@ -127,7 +127,7 @@ public class CredentialService {
             credentialFieldRepository.save(credentialField); // Guardamos el CredentialField
         }
         } catch (Exception e) {
-            System.out.pritln("Error: " + e);
+            System.out.println("Error: " + e);
         }
     }
 
