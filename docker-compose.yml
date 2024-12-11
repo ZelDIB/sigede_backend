@@ -22,7 +22,7 @@ services:
             SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/sigede_db
             SPRING_DATASOURCE_USERNAME: sigede
             SPRING_DATASOURCE_PASSWORD: sigede2024
-            SPRING_JPA_HIBERNATE_DDL_AUTO: create
+            SPRING_JPA_HIBERNATE_DDL_AUTO: update
             SPRING_MAIL_HOST: smtp.gmail.com
             SPRING_MAIL_PORT: 587
             SPRING_MAIL_USERNAME: sigedecontacto@gmail.com
