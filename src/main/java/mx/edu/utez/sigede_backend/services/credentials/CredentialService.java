@@ -92,6 +92,7 @@ public class CredentialService {
 
     @Transactional
     public void createCredential(RequestCredentialDTO payload) {
+        try {
         // Verificar si la institución existe
         Institution institution = institutionRepository.findById(payload.getInstitutionId())
                 .orElseThrow(() -> new CustomException("institution.notfound"));
@@ -124,6 +125,9 @@ public class CredentialService {
             credentialField.setFkUserInfo(userInfo);
 
             credentialFieldRepository.save(credentialField); // Guardamos el CredentialField
+        }
+        } catch (Exception e) {
+            System.out.pritln("Error: " + e);
         }
     }
 
