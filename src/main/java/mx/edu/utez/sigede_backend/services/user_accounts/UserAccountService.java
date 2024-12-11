@@ -151,8 +151,7 @@ public class UserAccountService {
         }
         List<UserAccount> capturistas = userAccountRepository.findByFkInstitution_InstitutionIdAndFkRol_NameIgnoreCase(institutionId, "CAPTURISTA");
 
-        return capturistas.stream().map(userAccount -> new GetCapturistsDTO(userAccount.getUserAccountId(), userAccount.getName(),
-                userAccount.getFkStatus().getName())).toList();
+        return capturistas.stream().map(userAccount -> new GetCapturistsDTO(userAccount.getUserAccountId(), userAccount.getName(),userAccount.getFkStatus().getName(),userAccount.getEmail())).toList();
     }
 
     @Transactional
