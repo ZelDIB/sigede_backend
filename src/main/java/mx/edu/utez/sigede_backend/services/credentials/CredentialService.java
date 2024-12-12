@@ -13,10 +13,11 @@ import mx.edu.utez.sigede_backend.models.credential_field.CredentialField;
 import mx.edu.utez.sigede_backend.models.credential_field.CredentialFieldRepository;
 import mx.edu.utez.sigede_backend.models.institution.Institution;
 import mx.edu.utez.sigede_backend.models.institution.InstitutionRepository;
+import mx.edu.utez.sigede_backend.models.institution_capturist_field.InstitutionCapturistField;
+import mx.edu.utez.sigede_backend.models.institution_capturist_field.InstitutionCapturistFieldRepository;
 import mx.edu.utez.sigede_backend.models.user_account.UserAccount;
 import mx.edu.utez.sigede_backend.models.user_account.UserAccountRepository;
 import mx.edu.utez.sigede_backend.models.user_info.UserInfo;
-import mx.edu.utez.sigede_backend.models.user_info.UserInfoRepository;
 import mx.edu.utez.sigede_backend.utils.exception.CustomException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,19 +33,18 @@ import java.util.stream.Collectors;
 @Service
 public class CredentialService {
     private final CredentialFieldRepository credentialFieldRepository;
-    private final UserInfoRepository userInfoRepository;
     private final InstitutionRepository institutionRepository;
     private final CredentialRepository credentialRepository;
     private final UserAccountRepository userAccountRepository;
+    private final InstitutionCapturistFieldRepository institutionCapturistFieldRepository;
 
-    public CredentialService(CredentialFieldRepository credentialFieldRepository, UserInfoRepository userInfoRepository,
-                             InstitutionRepository institutionRepository, CredentialRepository credentialRepository,
-                             UserAccountRepository userAccountRepository) {
+    public CredentialService(CredentialFieldRepository credentialFieldRepository, InstitutionRepository institutionRepository, CredentialRepository credentialRepository,
+                             UserAccountRepository userAccountRepository, InstitutionCapturistFieldRepository institutionCapturistFieldRepository) {
         this.credentialFieldRepository = credentialFieldRepository;
-        this.userInfoRepository = userInfoRepository;
         this.institutionRepository = institutionRepository;
         this.credentialRepository = credentialRepository;
         this.userAccountRepository = userAccountRepository;
+        this.institutionCapturistFieldRepository = institutionCapturistFieldRepository;
     }
 
     public Page<Credential> getAllCredentialsByInstitution(Long institutionId, String name, int page, int size) {
@@ -112,11 +112,16 @@ public class CredentialService {
 
         credential = credentialRepository.save(credential);
 
+        List<InstitutionCapturistField> fields = institutionCapturistFieldRepository.findAllByFkInstitution_InstitutionId(institution.getInstitutionId());
+
         for (RequestCredentialFieldDTO fieldDTO : payload.getFields()) {
-            // Se asume que los tags ya están definidos en la tabla 'UserInfo' y se encuentran asociados
-            UserInfo userInfo = userInfoRepository.findByTag(fieldDTO.getTag());
-            if (userInfo == null){
-                throw new CustomException("user.info.not.found");
+
+            UserInfo userInfo = new UserInfo();
+
+            for (InstitutionCapturistField field : fields) {
+                if (field.getFkUserInfo().getTag().equals(fieldDTO.getTag())) {
+                    userInfo = field.getFkUserInfo();
+                }
             }
 
             CredentialField credentialField = new CredentialField();
@@ -177,12 +182,15 @@ public class CredentialService {
         // Guardar la credencial actualizada
         credentialRepository.save(credential);
 
+        List<InstitutionCapturistField> fields = institutionCapturistFieldRepository.findAllByFkInstitution_InstitutionId(credential.getFkInstitution().getInstitutionId());
+
         // Actualizar los CredentialField usando el tag
         for (RequestUpdateCredentialFieldDTO fieldDTO : payload.getFields()) {
-            // Encontrar el UserInfo por el tag
-            UserInfo userInfo = userInfoRepository.findByTag(fieldDTO.getTag());
-            if(userInfo == null){
-                throw new CustomException("user.info.not.found");
+            UserInfo userInfo = new UserInfo();
+            for (InstitutionCapturistField field : fields) {
+                if (field.getFkUserInfo().getTag().equals(fieldDTO.getTag())) {
+                    userInfo = field.getFkUserInfo();
+                }
             }
 
             // Encontrar el CredentialField asociado a la credencial y al UserInfo
