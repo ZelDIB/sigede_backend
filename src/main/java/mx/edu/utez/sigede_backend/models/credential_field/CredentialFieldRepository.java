@@ -18,4 +18,6 @@ public interface CredentialFieldRepository extends JpaRepository<CredentialField
     List<CredentialField> findByCredentialId(@Param("credentialId") Long credentialId);
 
     Optional<CredentialField> findByFkCredentialAndFkUserInfo(Credential credential, UserInfo userInfo);
+
+    void deleteByFkUserInfo(UserInfo userInfo);
 }
