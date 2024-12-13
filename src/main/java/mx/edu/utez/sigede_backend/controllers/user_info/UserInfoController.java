@@ -90,7 +90,7 @@ public class UserInfoController {
             Map<String, Object> result = userInfoService.getFieldsByInstitution(institutionId);
 
             if (result == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron campos.");
+                return ResponseEntity.ok("No hay formulario.");
             }
             return ResponseEntity.ok(result);
         } catch (CustomException e) {
