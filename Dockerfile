@@ -10,7 +10,7 @@ COPY . .
 
 RUN mvn clean package -DskipTests
 
-FROM openjdk:17-jdk-slim
+FROM openjdk:17-jdk-slim AS run
 
 WORKDIR /app
 
