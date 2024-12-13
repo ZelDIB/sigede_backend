@@ -159,6 +159,7 @@ public class UserInfoService {
         return response;
     }
 
+    @Transactional
     public void deleteFieldsByInstitution(Long institutionId, List<Long> fieldIds) {
         Institution institution = institutionRepository.findByInstitutionId(institutionId);
         if (institution == null) {
