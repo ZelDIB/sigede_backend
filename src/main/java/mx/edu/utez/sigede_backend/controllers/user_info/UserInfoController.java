@@ -88,6 +88,10 @@ public class UserInfoController {
     public ResponseEntity<?> getFieldsByInstitution(@PathVariable Long institutionId) {
         try {
             Map<String, Object> result = userInfoService.getFieldsByInstitution(institutionId);
+
+            if (result == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
             return ResponseEntity.ok(result);
         } catch (CustomException e) {
             String errorMessage = errorDictionary.getErrorMessage(e.getErrorCode());
