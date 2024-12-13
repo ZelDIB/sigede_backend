@@ -116,7 +116,7 @@ public class UserInfoService {
         List<InstitutionCapturistField> fields = institutionCapturistFieldRepository.findAllByFkInstitution_InstitutionId(institutionId);
 
         if (fields.isEmpty()) {
-            throw new CustomException("institution.notfound");
+            throw new CustomException("form.fields.not.found");
         }
 
         Institution institution = fields.get(0).getFkInstitution();

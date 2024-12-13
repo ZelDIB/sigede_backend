@@ -51,6 +51,7 @@ public class ErrorDictionary {
         errorMessages.put("userphoto.not.blank", "userphoto requerido");
         errorMessages.put("credential.fields.not.null", "campos requeridos");
         errorMessages.put("credential.fields.not.empty", "campos no vacíos");
+        errorMessages.put("form.fields.not.found", "No se encontraron campos para esta institucion.");
         errorMessages.put("invalid.potion", "Opción no valida.");
         errorMessages.put("image.not.found", "No se encontro la imagen en el documento");
         errorMessages.put("invalid.new.password", "La nueva contraseña debe de contener al menos 8 caracteres, una mayuscual, un " +
