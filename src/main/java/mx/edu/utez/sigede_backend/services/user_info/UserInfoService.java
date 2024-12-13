@@ -5,6 +5,7 @@ import mx.edu.utez.sigede_backend.controllers.institution_capturist_field.DTO.In
 import mx.edu.utez.sigede_backend.controllers.user_info.dto.UserInfoDTO;
 import mx.edu.utez.sigede_backend.controllers.user_info.dto.UserInfoPostDTO;
 import mx.edu.utez.sigede_backend.controllers.user_info.dto.UserInfoUpdateDTO;
+import mx.edu.utez.sigede_backend.models.credential_field.CredentialFieldRepository;
 import mx.edu.utez.sigede_backend.models.institution.Institution;
 import mx.edu.utez.sigede_backend.models.institution.InstitutionRepository;
 import mx.edu.utez.sigede_backend.models.institution_capturist_field.InstitutionCapturistField;
@@ -22,14 +23,16 @@ public class UserInfoService {
     private final InstitutionCapturistFieldRepository institutionCapturistFieldRepository;
     private final UserInfoRepository userInfoRepository;
     private final InstitutionRepository institutionRepository;
+    private final CredentialFieldRepository credentialFieldRepository;
 
     public UserInfoService(
             InstitutionCapturistFieldRepository institutionCapturistFieldRepository,
             UserInfoRepository userInfoRepository,
-            InstitutionRepository institutionRepository) {
+            InstitutionRepository institutionRepository, CredentialFieldRepository credentialFieldRepository) {
         this.institutionCapturistFieldRepository = institutionCapturistFieldRepository;
         this.userInfoRepository = userInfoRepository;
         this.institutionRepository = institutionRepository;
+        this.credentialFieldRepository = credentialFieldRepository;
     }
 
     @Transactional
@@ -154,5 +157,22 @@ public class UserInfoService {
         response.put("fields", capturistFieldDTOs);
         response.put("userInfo", userInfoDTOs);
         return response;
+    }
+
+    public void deleteFieldsByInstitution(Long institutionId, List<Long> fieldIds) {
+        Institution institution = institutionRepository.findByInstitutionId(institutionId);
+        if (institution == null) {
+            throw new CustomException("institution.notfound");
+        }
+
+        for (Long fieldId : fieldIds) {
+            InstitutionCapturistField field = institutionCapturistFieldRepository.findByInstitutionCapturistFieldId(fieldId);
+            if (field == null) {
+                throw new CustomException("form.field.notfound");
+            }
+            credentialFieldRepository.deleteByFkUserInfo(field.getFkUserInfo());
+            institutionCapturistFieldRepository.deleteByInstitutionCapturistFieldId(field.getInstitutionCapturistFieldId());
+            userInfoRepository.deleteByUserInfoId(field.getFkUserInfo().getUserInfoId());
+        }
     }
 }

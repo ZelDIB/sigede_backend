@@ -2,6 +2,7 @@ package mx.edu.utez.sigede_backend.controllers.user_info;
 
 import mx.edu.utez.sigede_backend.controllers.Institutions.DTO.InstitutionResponseDTO;
 import mx.edu.utez.sigede_backend.controllers.institution_capturist_field.DTO.CapturistFieldResponseDTO;
+import mx.edu.utez.sigede_backend.controllers.user_info.dto.RequestDeleteUserInfoDTO;
 import mx.edu.utez.sigede_backend.controllers.user_info.dto.UserInfoPostDTO;
 import mx.edu.utez.sigede_backend.controllers.user_info.dto.UserInfoUpdateDTO;
 import mx.edu.utez.sigede_backend.models.institution_capturist_field.InstitutionCapturistField;
@@ -10,10 +11,12 @@ import mx.edu.utez.sigede_backend.utils.exception.CustomException;
 import mx.edu.utez.sigede_backend.utils.exception.ErrorDictionary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/user-info")
@@ -89,15 +92,19 @@ public class UserInfoController {
         try {
             Map<String, Object> result = userInfoService.getFieldsByInstitution(institutionId);
 
-            if (result == null) {
-                return ResponseEntity.ok("No hay formulario.");
-            }
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(Objects.requireNonNullElse(result, "No hay formulario."));
         } catch (CustomException e) {
             String errorMessage = errorDictionary.getErrorMessage(e.getErrorCode());
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", errorMessage);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
+    }
+
+    @PostMapping("/delete-form-fields")
+    public ResponseEntity<?> deleteFieldsByInstitution(@Validated @RequestBody RequestDeleteUserInfoDTO request) {
+        userInfoService.deleteFieldsByInstitution(request.getInstitutionId(), request.getFields());
+
+        return ResponseEntity.ok().body("Campos eliminados correctamente");
     }
 }

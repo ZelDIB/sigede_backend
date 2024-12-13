@@ -8,4 +8,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface InstitutionCapturistFieldRepository extends JpaRepository<InstitutionCapturistField, Long> {
     List<InstitutionCapturistField> findAllByFkInstitution_InstitutionId(Long institutionId);
+
+    InstitutionCapturistField findByInstitutionCapturistFieldId(Long institutionCapturistFieldId);
+
+    void deleteByInstitutionCapturistFieldId(Long institutionCapturistFieldId);
 }
