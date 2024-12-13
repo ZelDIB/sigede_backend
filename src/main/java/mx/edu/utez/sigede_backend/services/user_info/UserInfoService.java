@@ -73,7 +73,7 @@ public class UserInfoService {
 
             InstitutionCapturistField field = optionalField.get();
 
-            field.setRequired(update.getIsRequired());
+            field.setRequired(update.isRequired());
 
 
             UserInfo userInfo = field.getFkUserInfo();
