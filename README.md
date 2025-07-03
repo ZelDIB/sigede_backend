@@ -68,7 +68,8 @@ IDE como IntelliJ o VSCode
 Pasos:
 Clona el repositorio:
 
-git clone https://github.com/ZelDIB/sigede-api.git
+git clone https://github.com/ZelDIB/sigede_backend.git
+
 cd sigede-api
 
 Crea una base de datos llamada sigede en MySQL.
