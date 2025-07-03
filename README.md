@@ -68,20 +68,15 @@ IDE como IntelliJ o VSCode
 Pasos:
 Clona el repositorio:
 
-bash
-Copiar
-Editar
 git clone https://github.com/ZelDIB/sigede-api.git
 cd sigede-api
+
 Crea una base de datos llamada sigede en MySQL.
 
 Configura las variables de entorno en tu entorno local o archivo .env.
 
 Ejecuta el proyecto:
 
-bash
-Copiar
-Editar
 mvn spring-boot:run
 
 El backend se iniciará en http://localhost:8080.
