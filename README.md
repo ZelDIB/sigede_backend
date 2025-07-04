@@ -72,6 +72,7 @@ Tu archivo `application.properties` debe contener las variables necesarias:
 
 ### Ejecución con Maven
 
+```bash
 # Compilar
 mvn clean install
 
