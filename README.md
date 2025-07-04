@@ -39,24 +39,6 @@ El backend está construido con **Spring Boot** y sigue una arquitectura RESTful
 
 ---
 
-## 📁 Estructura del proyecto
-
-sigede_backend/
-├── src/
-│ ├── main/
-│ │ ├── java/com/zeldib/sigede/
-│ │ │ ├── controller/
-│ │ │ ├── service/
-│ │ │ ├── model/
-│ │ │ └── repository/
-│ └── resources/
-│ └── application.properties
-├── Dockerfile
-├── docker-compose.yml
-└── pom.xml
-
----
-
 ## 📁 Variables de entorno requeridas
 
 Tu archivo `application.properties` debe contener las variables necesarias:
