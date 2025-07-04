@@ -1,6 +1,7 @@
 # SIGEDE API – Backend del Sistema de Gestión de Credenciales
 
-Este es el backend de **SIGEDE** (Sistema de Gestión de Credenciales), desarrollado con **Spring Boot** y **MySQL**. Proporciona una API segura y estructurada para administrar formularios personalizados, usuarios, credenciales, generación de PDFs y más.
+Este es el backend de **SIGEDE**, una aplicación web que permite a instituciones crear credenciales personalizadas para su personal, usando formularios dinámicos, diseño de plantillas y generación automática de PDFs con QR.  
+El backend está construido con **Spring Boot** y sigue una arquitectura RESTful, con autenticación por JWT y despliegue automatizado mediante **Jenkins y Docker** en instancias **AWS EC2**.
 
 > 👉 Repositorio del frontend (Nuxt 3): [SIGEDE Web](https://github.com/ZelDIB/sigede_web)
 
@@ -26,13 +27,33 @@ Este es el backend de **SIGEDE** (Sistema de Gestión de Credenciales), desarrol
 - Java 17
 - Spring Boot
 - Spring Data JPA
-- Spring Security (con JWT)
+- Spring Security (JWT)
 - MySQL
-- Lombok
-- SpringDoc OpenAPI (Swagger)
-- JavaMailSender (para notificaciones)
-- iTextPDF (generación de PDFs)
-- ZXing (generación de códigos QR)
+- JavaMailSender
+- iTextPDF (PDFs)
+- ZXing (QR)
+- Docker + Docker Compose
+- Jenkins (CI/CD)
+- AWS EC2 (producción)
+- Git y GitHub
+
+---
+
+## 📁 Estructura del proyecto
+
+sigede_backend/
+├── src/
+│ ├── main/
+│ │ ├── java/com/zeldib/sigede/
+│ │ │ ├── controller/
+│ │ │ ├── service/
+│ │ │ ├── model/
+│ │ │ └── repository/
+│ └── resources/
+│ └── application.properties
+├── Dockerfile
+├── docker-compose.yml
+└── pom.xml
 
 ---
 
@@ -55,29 +76,22 @@ Tu archivo `application.properties` debe contener las variables necesarias:
 
 - API_BASE_URL=http://localhost:8080
 
-## 🛠️ Ejecución local
-Requisitos:
-Java 17+
+---
 
-Maven
+## 📦 Instalación local
 
-MySQL 8+
+### Requisitos
 
-IDE como IntelliJ o VSCode
+- Java 17
+- MySQL
+- Maven
+- Docker (opcional)
+- Archivo `.env` con variables requeridas
 
-Pasos:
-Clona el repositorio:
+### Ejecución con Maven
 
-git clone https://github.com/ZelDIB/sigede_backend.git
+# Compilar
+mvn clean install
 
-cd sigede-api
-
-Crea una base de datos llamada sigede en MySQL.
-
-Configura las variables de entorno en tu entorno local o archivo .env.
-
-Ejecuta el proyecto:
-
+# Ejecutar
 mvn spring-boot:run
-
-El backend se iniciará en http://localhost:8080.
